@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Subject {
+  id       String  @id @default(cuid())
+  username String? @unique
+
+  createdAt DateTime @default(now())
+
+  user         User?
+  organization Organization?
+
+  tokens AccessToken[]
+}
+
+model AccessToken {
+  id         String @id @default(cuid())
+  secretHash String
+
+  label String?
+
+  subjectId String
+  subject   Subject @relation(fields: [subjectId], references: [id])
+
+  issuedAt  DateTime  @default(now())
+  expiresAt DateTime?
+
+  issuedById String
+  issuedBy   User   @relation(fields: [issuedById], references: [id])
+}
+
+model User {
+  id      String  @id
+  subject Subject @relation(fields: [id], references: [id])
+
+  email        String @unique
+  passwordHash String
+
+  name String
+
+  issuedAccessTokens AccessToken[]
+  organizations      Membership[]
+}
+
+model Organization {
+  id      String  @id
+  subject Subject @relation(fields: [id], references: [id])
+
+  title String
+
+  members Membership[]
+}
+
+model Membership {
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  shares Int
+
+  @@unique([userId, organizationId])
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@neurons/prisma",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "kiraind",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.7.18",
+    "prisma": "^4.3.1",
+    "ts-standard": "^11.0.0",
+    "typescript": "^4.8.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.3.1"
+  }
+}
